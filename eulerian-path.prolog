@@ -7,15 +7,15 @@ connected(c,d).
 connected(d,e).
 connected(e,b).
 
-eulerianpath(E, Cs) :-
-   setof(A-B, call(E, A,B), ABs),
-   travel(ABs, Cs).
+eulerianpath(Edges, Res) :-
+   setof(From-To, call(Edges, From, To), Acc),
+   travel(Acc, Res).
 
 travel([], [_]).
-travel(L, [X,Y|Xs]) :-
-    select(A-B,L,Tmp),
-    ( A = X, B = Y ; B = X, A = Y ),
-    travel(Tmp, [Y|Xs]).
+travel(L, [Now,Next|Rest]) :-
+    select(From-To,L,Tmp),
+    ( From = Now, To = Next ; To = Now,From = Next ),
+    travel(Tmp, [Next|Rest]).
 
 gen(S,L):-S=[H|T],gen(H,T,[],L).
 gen(_,[],L,L):-!.
